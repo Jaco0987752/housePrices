@@ -15,6 +15,8 @@ data = pd.read_csv("Complete_dataset.csv", sep=';')
 # make numeric.
 data["Perioden_Title"] = pd.to_numeric(data["Perioden_Title"])
 data["gemiddelde verkoopprijs.GemiddeldeVerkoopprijs_1"] = pd.to_numeric(data["gemiddelde verkoopprijs.GemiddeldeVerkoopprijs_1"])
+data["GemiddeldeBevolking_2"] = pd.to_numeric(data["GemiddeldeBevolking_2"])
+
 
 # Get the values of amsterdam and sort them on year.
 amsterdam = data[data["RegioS_Title"] == 'Amsterdam']
@@ -22,10 +24,10 @@ amsterdam = amsterdam.sort_values("Perioden_Title", ascending=False)
 #print(amsterdam[["RegioS_Title", "Perioden_Title"]])
 
 # extract x and y values, so they can be plot.
-x_values = amsterdam[["Perioden_Title"]]
+x_values = amsterdam[["Perioden_Title", "GemiddeldeBevolking_2"]]
 y_values = amsterdam[["gemiddelde verkoopprijs.GemiddeldeVerkoopprijs_1"]]
 
-# 
+# Do linear regression.
 reg = LinearRegression().fit(x_values, y_values)
 y_pred = reg.predict(x_values)
 

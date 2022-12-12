@@ -18,14 +18,14 @@ data["gemiddelde verkoopprijs.GemiddeldeVerkoopprijs_1"] = pd.to_numeric(data["g
 data["GemiddeldeBevolking_2"] = pd.to_numeric(data["GemiddeldeBevolking_2"])
 
 
-# Get the values of amsterdam and sort them on year.
-amsterdam = data[data["RegioS_Title"] == 'Amsterdam']
-amsterdam = amsterdam.sort_values("Perioden_Title", ascending=False)
-#print(amsterdam[["RegioS_Title", "Perioden_Title"]])
+# Get the values of gemeente and sort them on year.
+gemeente = data[data["RegioS_Title"] == 'Alblasserdam']
+gemeente = gemeente.sort_values("Perioden_Title", ascending=False)
+#print(gemeente[["RegioS_Title", "Perioden_Title"]])
 
 # extract x and y values, so they can be plot.
-x_values = amsterdam[["Perioden_Title", "GemiddeldeBevolking_2"]]
-y_values = amsterdam[["gemiddelde verkoopprijs.GemiddeldeVerkoopprijs_1"]]
+x_values = gemeente[["Perioden_Title", "GemiddeldeBevolking_2"]]
+y_values = gemeente[["gemiddelde verkoopprijs.GemiddeldeVerkoopprijs_1"]]
 
 # Do linear regression.
 reg = LinearRegression().fit(x_values, y_values)
@@ -39,5 +39,5 @@ plt.plot(x, y, color="red", label="data")
 plt.plot(x, y_pred, color="blue", label="pred")
 
 
-#print(reg.score(x_values, Y_values))
+print("the r squared of the regression:" + str(reg.score(x_values, y_values)))
 

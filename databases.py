@@ -12,11 +12,6 @@ from sklearn.linear_model import LinearRegression
 
 data = pd.read_csv("Complete_dataset.csv", sep=';')
 
-# make numeric.
-#data["Perioden_Title"] = pd.to_numeric(data["Perioden_Title"])
-#data["gemiddelde verkoopprijs.GemiddeldeVerkoopprijs_1"] = pd.to_numeric(data["gemiddelde verkoopprijs.GemiddeldeVerkoopprijs_1"])
-#data["GemiddeldeBevolking_2"] = pd.to_numeric(data["GemiddeldeBevolking_2"])
-
 data2 = pd.read_csv("ds_gemeente_compleet.csv", sep=";", encoding='latin-1')
 mergedData = pd.merge(data, data2, how='left', left_on=["RegioS","Perioden"], right_on=["RegioS", "Perioden"])
 
@@ -29,6 +24,8 @@ mergedData = mergedData[[
     "Woningdichtheid_93", 
     "Woningen_97"]]
 
-mergedData.to_csv("data.csv", sep=';')
 
+morgateData = pd.read_csv("Hypotheekrente.csv", sep=";")
+withMorgateData = pd.merge(mergedData, morgateData, how='left', left_on=["Perioden_Title"], right_on=["Jaar"])
+withMorgateData.to_csv("data.csv", sep=';')
 print(mergedData)

@@ -19,6 +19,9 @@ data["gemiddelde verkoopprijs.GemiddeldeVerkoopprijs_1"] = pd.to_numeric(data["g
 data["GemiddeldeBevolking_2"] = pd.to_numeric(data["GemiddeldeBevolking_2"])
 data["Bevolkingsdichtheid_57"] = pd.to_numeric(data["Bevolkingsdichtheid_57"])
 data["Woningdichtheid_93"] = pd.to_numeric(data["Woningdichtheid_93"])
+data["Hypotheekrente"] = pd.to_numeric(data["Hypotheekrente"])
+
+data["borrowcapacity"] =1 / data["Hypotheekrente"]
 
 # Create meta data.
 data["housepressure"] = data["Bevolkingsdichtheid_57"] / data["Woningdichtheid_93"]  
@@ -31,16 +34,18 @@ gemeente = gemeente.sort_values("Perioden_Title", ascending=False)
 #print(gemeente[["RegioS_Title", "Perioden_Title"]])
 
 # Extract x and y values, so they can be plot.
-x_values = gemeente[["Perioden_Title", "GemiddeldeBevolking_2", "housepressure"]]
+x_values = gemeente[["borrowcapacity","Perioden_Title", "GemiddeldeBevolking_2", "housepressure"]]
 y_values = gemeente[["gemiddelde verkoopprijs.GemiddeldeVerkoopprijs_1"]]
 
 X_test, X_train, y_test, y_train, = train_test_split(
     x_values, y_values, test_size=0.75, shuffle=False ,random_state=42)
 
+x_regression_values = [["borrowcapacity","GemiddeldeBevolking_2", "housepressure"]]
+
 # Do linear regression.
 reg = ElasticNet(alpha=1.0,  l1_ratio=0.5)
-reg.fit(X_train, y_train)
-y_pred = reg.predict(X_test)
+reg.fit(X_train[["borrowcapacity","GemiddeldeBevolking_2", "housepressure"]], y_train)
+y_pred = reg.predict(X_test[["borrowcapacity","GemiddeldeBevolking_2", "housepressure"]])
 
 
 x = np.array(x_values["Perioden_Title"])
@@ -63,5 +68,5 @@ plt.plot(x2, y2, color="blue", label="pred")
 plt.plot(x, y, color="red", label="data")
 
 
-print("the r squared of the regression:" + str(reg.score(X_test, y_test)))
+print("the r squared of the regression:" + str(reg.score(X_test[["borrowcapacity","GemiddeldeBevolking_2", "housepressure"]], y_test)))
 

@@ -23,10 +23,10 @@ data["Woningdichtheid_93"] = pd.to_numeric(data["Woningdichtheid_93"])
 # Create meta data.
 data["housepressure"] = data["Bevolkingsdichtheid_57"] / data["Woningdichtheid_93"]  
 
-
+city = 'Rotterdam'
 
 # Get the values of gemeente and sort them on year.
-gemeente = data[data["RegioS_Title"] == 'Amsterdam']
+gemeente = data[data["RegioS_Title"] == city]
 gemeente = gemeente.sort_values("Perioden_Title", ascending=False)
 #print(gemeente[["RegioS_Title", "Perioden_Title"]])
 
@@ -34,8 +34,8 @@ gemeente = gemeente.sort_values("Perioden_Title", ascending=False)
 x_values = gemeente[["Perioden_Title", "GemiddeldeBevolking_2", "housepressure"]]
 y_values = gemeente[["gemiddelde verkoopprijs.GemiddeldeVerkoopprijs_1"]]
 
-X_train, X_test, y_train, y_test = train_test_split(
-    x_values, y_values, test_size=0.33, shuffle=False ,random_state=42)
+X_test, X_train, y_test, y_train, = train_test_split(
+    x_values, y_values, test_size=0.75, shuffle=False ,random_state=42)
 
 # Do linear regression.
 reg = ElasticNet(alpha=1.0,  l1_ratio=0.5)
@@ -56,9 +56,12 @@ items = dict(zip(unsorted_x,unsorted_y)).items()
 res = sorted(items)
 x2, y2 = zip(*res)
 
+plt.title("housing prices " + city)
+plt.ylabel("Average sales prices")
+plt.xlabel("years")
 plt.plot(x2, y2, color="blue", label="pred")
 plt.plot(x, y, color="red", label="data")
 
 
-print("the r squared of the regression:" + str(reg.score(x_values, y_values)))
+print("the r squared of the regression:" + str(reg.score(X_test, y_test)))
 

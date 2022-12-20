@@ -12,7 +12,7 @@ from sklearn.linear_model import LinearRegression
 
 data = pd.read_csv("Complete_dataset.csv", sep=';')
 
-data2 = pd.read_csv("ds_gemeente_compleet.csv", sep=";", encoding='latin-1')
+data2 = pd.read_csv("ds_gemeente_compleet.csv", sep=";", encoding='latin-1', decimal=".")
 mergedData = pd.merge(data, data2, how='left', left_on=["RegioS","Perioden"], right_on=["RegioS", "Perioden"])
 
 mergedData = mergedData[[
@@ -22,10 +22,19 @@ mergedData = mergedData[[
     "RegioS_Title", 
     "Bevolkingsdichtheid_57", 
     "Woningdichtheid_93", 
-    "Woningen_97"]]
+    "Woningen_97",
+    "GemiddeldeHuishoudensgrootte_89"]]
 
 
 morgateData = pd.read_csv("Hypotheekrente.csv", sep=";")
+wageData = pd.read_csv("loon.csv", sep=";", decimal=",")[["jaar", "loon"]]
+
 withMorgateData = pd.merge(mergedData, morgateData, how='left', left_on=["Perioden_Title"], right_on=["Jaar"])
-withMorgateData.to_csv("data.csv", sep=';')
-print(mergedData)
+withWageData = pd.merge(withMorgateData,  wageData, how='left', left_on=["Jaar"], right_on=["jaar"])
+
+withWageData = withWageData.replace(np.NaN, "0.0")
+withWageData = withWageData.replace(".", "0.0")
+
+print(withWageData.loc[7506].at["GemiddeldeHuishoudensgrootte_89"])
+withWageData.to_csv("data.csv", sep=';')
+#print(withWageData["GemiddeldeHuishoudensgrootte_89"])

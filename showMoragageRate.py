@@ -39,7 +39,7 @@ data["housepressure"] = data["Bevolkingsdichtheid_57"] / data["Woningdichtheid_9
 #data["borrowcapacity"] = data["loon"] / np.sqrt(data["Hypotheekrente"])
 
 
-city = 'Rotterdam'
+city = 'Amsterdam'
 
 # Get the values of gemeente and sort them on year.
 gemeente = data[data["RegioS_Title"] == city]

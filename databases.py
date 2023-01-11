@@ -27,14 +27,16 @@ mergedData = mergedData[[
 
 
 morgateData = pd.read_csv("Hypotheekrente.csv", sep=";")
-wageData = pd.read_csv("loon.csv", sep=";", decimal=",")[["jaar", "loon"]]
+wageData = pd.read_csv("income.csv", sep=";", decimal=",")[["jaar", "inkomen"]]
 
 withMorgateData = pd.merge(mergedData, morgateData, how='left', left_on=["Perioden_Title"], right_on=["Jaar"])
 withWageData = pd.merge(withMorgateData,  wageData, how='left', left_on=["Jaar"], right_on=["jaar"])
+withWageData = withWageData.interpolate() # get a value for income in 2021 based on extrapolation.
+
+print(withWageData[["inkomen", "Jaar", "Hypotheekrente"]])
 
 withWageData = withWageData.replace(np.NaN, "0.0")
 withWageData = withWageData.replace(".", "0.0")
 
-print(withWageData.loc[7506].at["GemiddeldeHuishoudensgrootte_89"])
 withWageData.to_csv("data.csv", sep=';')
 #print(withWageData["GemiddeldeHuishoudensgrootte_89"])

@@ -21,7 +21,7 @@ data["GemiddeldeVerkoopprijs"] = pd.to_numeric(data["gemiddelde verkoopprijs.Gem
 # metadata
 data["borrowcapacity"] = data["inkomen"] / data["Hypotheekrente"]
 
-city = input("Enter city name like Amsterdam or Rotterdam: ").lower()
+city = input("Enter city name like Amsterdam or Rotterdam: ").capitalize()
 
 # Get the values of gemeente and sort them on year.
 gemeente = data[data["RegioS_Title"] == city]

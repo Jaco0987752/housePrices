@@ -7,7 +7,7 @@ Created on Wed Dec  7 12:57:44 2022
 
 import numpy as np
 import pandas as pd
-from sklearn.linear_model import Ridge
+from sklearn.linear_model import LinearRegression
 from sklearn.model_selection import train_test_split
 
 if __name__== "__main__" :
@@ -51,11 +51,11 @@ if __name__== "__main__" :
         x_values, y_values, test_size=0.70, shuffle=True ,random_state=42)
     
     # Do linear regression.
-    reg = reg = Ridge(alpha=15.0)
+    reg = reg = LinearRegression()
     reg.fit(x_train, y_train)
     prediction = reg.predict([[borrowCapacity]])
     
-    print("The predicted average housprice for " + city + " is: " + str(prediction[0]))
+    print("The predicted average housprice for " + city + " is: " + str(prediction[0][0]))
     
     x_test_ = np.array(x_test)
     y_test_ = np.array(y_test)

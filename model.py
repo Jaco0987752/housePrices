@@ -8,7 +8,7 @@ Created on Wed Dec  7 12:57:44 2022
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
-from sklearn.linear_model import Ridge
+from sklearn.linear_model import LinearRegression
 from sklearn.model_selection import train_test_split
 
 data = pd.read_csv("data.csv", sep=';')
@@ -53,7 +53,7 @@ x_test, x_train, y_test, y_train, = train_test_split(
 
 
 # Do linear regression.
-reg = Ridge(alpha=15.0)
+reg =  LinearRegression()
 reg.fit(x_train, y_train)
 y_pred = reg.predict(x_values)
 #y_pred2 = reg.predict(X_train)
